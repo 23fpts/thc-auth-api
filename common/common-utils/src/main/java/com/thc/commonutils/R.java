@@ -36,7 +36,7 @@ public class R {
     private R() {}
 
     // 链式编程
-    // 例如 R.success().code.message()
+    // 例如 R.ok().success(true).code(20001).message("test")
 
     /**
      *
