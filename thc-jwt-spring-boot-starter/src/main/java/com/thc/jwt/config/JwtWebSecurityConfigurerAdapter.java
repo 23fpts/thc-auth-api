@@ -1,13 +1,20 @@
 package com.thc.jwt.config;
 
+import com.thc.jwt.auth.MyAuthenticationFailureHandler;
+import com.thc.jwt.auth.MyAuthenticationSuccessHandler;
+import com.thc.jwt.auth.MyExpireSessionStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.annotation.Resource;
+
 
 /**
  * @author thc
@@ -18,6 +25,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 public class JwtWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+
+    @Resource
+    MyAuthenticationFailureHandler myAuthenticationFailureHandler;
 
 
     /**
@@ -41,16 +54,21 @@ public class JwtWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic()
 //                .and()
-//    // 针对所有请求需要先登录
+//                // 针对所有请求需要先登录
 //                .authorizeRequests().anyRequest()
-//    // 登录认证
+//                // 登录认证
 //                .authenticated();
 
-        http.csrf().disable()// 跨站防御攻击
+        http.csrf().disable()// 跨站防御攻击关闭
                 .formLogin()
                 .loginPage("login.html")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("index")
+                //
+                // .defaultSuccessUrl("index")
+                // .failureUrl("/login.html")
+                // 成功或者失败后执行自定义业务，和defaultSuccessUrl failureUrl只能二者选一个
+                .successHandler(myAuthenticationSuccessHandler)
+                .failureHandler(myAuthenticationFailureHandler)
                 .and()
                 .authorizeRequests()
                 .antMatchers("login.html", "/login").permitAll()
@@ -60,7 +78,25 @@ public class JwtWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
                 // .hasAnyRole("admin") // admin角色才可以访问的页面
                 // 或者
                 .hasAnyAuthority("ROLE_admin")
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()  // session 管理
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)// session 创建策略 IF_REQUIRED为默认的
+                // session 超时时间配置，重要
+                // 超时后重新跳转
+                .invalidSessionUrl("login.html")
+                // 每次登录session重新生成一session id ，4种
+                .sessionFixation()
+                // 重新把session复制一份生成一个session
+                .migrateSession()
+                // maximumSession 最大登录用户数量
+                .maximumSessions(1)
+                // 提供session保护策略，true表示登录后不允许再次登录，false表示允许再次登录但是之前的登录状态会下线
+                .maxSessionsPreventsLogin(false)
+                // session 超时和限制登录人数
+                .expiredSessionStrategy(new MyExpireSessionStrategy());
+
+
 
 
     }
