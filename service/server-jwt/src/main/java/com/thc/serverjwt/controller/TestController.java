@@ -1,6 +1,7 @@
 package com.thc.serverjwt.controller;
 
 import com.thc.commonutils.R;
+import com.thc.servicebase.exceptionhandler.MyException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,12 @@ public class TestController {
 
     @GetMapping("test")
     public R test() {
-        return R.ok().data("test ok!");
+
+        System.out.println(123);return R.ok().data("test ok!");
+    }
+
+    @GetMapping("test2")
+    public R test2() {
+        throw new MyException(123, "test2");
     }
 }

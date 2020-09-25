@@ -3,6 +3,7 @@ package com.thc.jwt;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author thc
@@ -13,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan(basePackages = {"com.thc.jwt"} )
+@ComponentScan(basePackages = {"com.thc"})
 public class BasicServerApplication {
 
     public static void main(String[] args) {

@@ -41,6 +41,7 @@ public class GlobalExceptionHandler {
     @ResponseBody // 为了返回数据
     public R error (MyException e) {
         // 日志
+        System.out.println("MyException");
         log.error(e.getMessage());
         e.printStackTrace();
         return R.error().code(e.getCode()).message(e.getMsg());

@@ -32,6 +32,8 @@ public class MyRBACService {
      */
     public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
 
+
+
         // 被验证的用户主体
         Object principal = authentication.getPrincipal();
 

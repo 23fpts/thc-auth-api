@@ -4,6 +4,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
  * @Description:
  * @date 2020/9/23 11:10 下午
  */
+@Component
 public class MyUserDetailsService implements UserDetailsService {
 
     @Resource
@@ -24,6 +26,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        System.out.println("loadUserByUsername");
         // 加载基础用户信息
         MyUserDetails myUserDetails = myUserDetailsServiceMapper.findByUserName(username);
 
@@ -46,6 +49,6 @@ public class MyUserDetailsService implements UserDetailsService {
                 )
         );
 
-        return null;
+        return myUserDetails;
     }
 }
