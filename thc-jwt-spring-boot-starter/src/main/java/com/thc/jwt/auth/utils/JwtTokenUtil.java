@@ -1,5 +1,6 @@
-package com.thc.jwt.auth.jwt;
+package com.thc.jwt.auth.utils;
 
+import com.thc.jwt.auth.model.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,28 +20,40 @@ import java.util.Map;
  * @Description: jwt
  * @date 2020/9/24 4:07 下午
  */
-@Data
-@ConfigurationProperties(prefix = "jwt")  // 配置secret，expiration，header 等价于@Value写在每个参数上
-@Component
+
 public class JwtTokenUtil {
 
-    private String secret;
-    private Long expiration;
-    private String header;
+    private JwtProperties jwtProperties;
 
+    public JwtTokenUtil(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
+
+    public JwtProperties getJwtProperties() {
+        return jwtProperties;
+    }
 
     /**
      * 生成token令牌
      *
      * @param userDetails 用户
+     * @param payloads 令牌中携带的附加信息
      * @return 令token牌
      */
-    public String generateToken(UserDetails userDetails) {
-        System.out.println("generateToken");
-        Map<String, Object> claims = new HashMap<>(2);
+    public String generateToken(UserDetails userDetails,
+                                Map<String,String> payloads) {
+        int payloadSizes = payloads == null? 0 : payloads.size();
+
+        Map<String, Object> claims = new HashMap<>(payloadSizes + 2);
         claims.put("sub", userDetails.getUsername());
         claims.put("created", new Date());
-        System.out.println(claims);
+
+        if(payloadSizes > 0){
+            for(Map.Entry<String,String> entry:payloads.entrySet()){
+                claims.put(entry.getKey(),entry.getValue());
+            }
+        }
+
         return generateToken(claims);
     }
 
@@ -116,14 +129,10 @@ public class JwtTokenUtil {
      * @return 令牌
      */
     private String generateToken(Map<String, Object> claims) {
-        Date expirationDate = new Date(System.currentTimeMillis() + expiration);
-
-        System.out.println(expiration);
-        System.out.println(SignatureAlgorithm.HS512);
-        System.out.println(secret);
+        Date expirationDate = new Date(System.currentTimeMillis() + jwtProperties.getExpiration());
         return Jwts.builder().setClaims(claims)
                 .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecret())
                 .compact();
     }
 
@@ -136,7 +145,7 @@ public class JwtTokenUtil {
     private Claims getClaimsFromToken(String token) {
         Claims claims;
         try {
-            claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            claims = Jwts.parser().setSigningKey(jwtProperties.getSecret()).parseClaimsJws(token).getBody();
         } catch (Exception e) {
             claims = null;
         }

@@ -1,5 +1,6 @@
-package com.thc.jwt.auth;
+package com.thc.jwt.auth.mapper;
 
+import com.thc.jwt.auth.model.MyUserDetails;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -31,7 +32,7 @@ public interface MyUserDetailsServiceMapper {
     List<String> findRoleByUserName(@Param("userId") String userId);
 
 
-    //根据用户角色查询用户权限
+    //根据用户角色查询用户权限 查找menu的url，即是权限
     //foreach元素的属性主要有 item，index，collection，open，separator，close。
     //
     //    item表示集合中每一个元素进行迭代时的别名，
@@ -52,5 +53,21 @@ public interface MyUserDetailsServiceMapper {
             "</script>"
     })
     List<String> findAuthorityByRoleCodes(@Param("roleCodes") List<String> roleCodes);
+
+
+    //根据用户角色查询用户接口访问权限
+    @Select({
+            "<script>",
+            "SELECT url " ,
+            "FROM sys_api a " ,
+            "LEFT JOIN sys_role_api ra ON a.id = ra.api_id " ,
+            "LEFT JOIN sys_role r ON r.id = ra.role_id ",
+            "WHERE r.role_code IN ",
+            "<foreach collection='roleCodes' item='roleCode' open='(' separator=',' close=')'>",
+            "#{roleCode}",
+            "</foreach>",
+            "</script>"
+    })
+    List<String> findApiByRoleCodes(@Param("roleCodes") List<String> roleCodes);
 
 }

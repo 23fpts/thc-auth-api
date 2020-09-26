@@ -1,6 +1,10 @@
-package com.thc.jwt.auth;
+package com.thc.jwt.auth.service;
 
+import com.thc.jwt.auth.mapper.MyRBACServiceMapper;
+import com.thc.jwt.auth.model.JwtProperties;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -24,14 +28,37 @@ public class MyRBACService {
     @Resource
     private MyRBACServiceMapper myRBACServiceMapper;
 
+    @Resource
+    private JwtProperties jwtProperties;
+
     /**
      * 判断某用户是否具有该request资源的访问权限
+     */
+    public boolean hasPermission(HttpServletRequest request, Authentication authentication){
+
+        // 被验证的用户主体
+        Object principal = authentication.getPrincipal();
+
+        if(principal instanceof UserDetails){
+
+            UserDetails userDetails = ((UserDetails)principal);
+            List<GrantedAuthority> authorityList =
+                    AuthorityUtils.commaSeparatedStringToAuthorityList(request.getRequestURI());
+            return userDetails.getAuthorities().contains(authorityList.get(0))
+                    || jwtProperties.getDevOpeningURI().contains(request.getRequestURI());
+        }
+
+        return false;
+    }
+
+    /**
+     * 判断某用户是否具有该request资源的访问权限 (old version)
      * @param request
      * @param authentication
      * @return
      */
-    public boolean hasPermission(HttpServletRequest request, Authentication authentication) {
-
+    /*
+    public boolean hasPermission1(HttpServletRequest request, Authentication authentication) {
 
 
         // 被验证的用户主体
@@ -51,4 +78,5 @@ public class MyRBACService {
         }
         return false;
     }
+     */
 }

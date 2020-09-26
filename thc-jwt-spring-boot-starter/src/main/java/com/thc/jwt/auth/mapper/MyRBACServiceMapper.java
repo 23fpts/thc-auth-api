@@ -1,4 +1,4 @@
-package com.thc.jwt.auth;
+package com.thc.jwt.auth.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

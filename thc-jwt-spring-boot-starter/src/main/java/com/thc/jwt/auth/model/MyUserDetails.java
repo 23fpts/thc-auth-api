@@ -1,4 +1,4 @@
-package com.thc.jwt.auth;
+package com.thc.jwt.auth.model;
 
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
