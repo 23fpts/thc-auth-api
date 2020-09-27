@@ -15,8 +15,9 @@ import org.springframework.context.annotation.ComponentScan;
 // @ComponentScan(basePackages = {"com.thc"}) 用于设置包的扫描规则，可以扫描到其他模块中的类，不写就只会默认扫描当前模块
 
 
-@SpringBootApplication
+//@SpringBootApplication
 @ComponentScan(basePackages = {"com.thc"})
+@SpringBootApplication(scanBasePackages={"com.thc"})
 public class JwtApplication {
 
     public static void main(String[] args) {

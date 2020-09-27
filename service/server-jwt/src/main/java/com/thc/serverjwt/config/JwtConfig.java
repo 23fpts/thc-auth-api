@@ -11,6 +11,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2020/9/20 9:54 下午
  */
 @Configuration
-@MapperScan("com.thc.serverjwt.mapper")
+@MapperScan("com.thc.**.mapper")
 public class JwtConfig {
 }

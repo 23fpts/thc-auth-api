@@ -20,11 +20,16 @@ public class TestController {
     @GetMapping("test")
     public R test() {
 
-        System.out.println(123);return R.ok().data("test ok!");
+
+        System.out.println(123);
+        System.out.println();
+        return R.ok().data("test ok!");
     }
 
     @GetMapping("test2")
     public R test2() {
         throw new MyException(123, "test2");
     }
+
+
 }
