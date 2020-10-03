@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_config")
 @ApiModel(value="SysConfig对象", description="系统全局配置参数")
-public class SysConfig {
+public class SysConfig implements Serializable {
 
     private static final long serialVersionUID=1L;
 

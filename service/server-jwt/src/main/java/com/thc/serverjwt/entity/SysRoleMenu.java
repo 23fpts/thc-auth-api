@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_role_menu")
 @ApiModel(value="SysRoleMenu对象", description="角色菜单权限关系表")
-public class SysRoleMenu {
+public class SysRoleMenu  implements Serializable {
 
     private static final long serialVersionUID=1L;
 

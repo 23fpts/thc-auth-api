@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_api")
 @ApiModel(value="SysApi对象", description="系统Http接口表，配合sys_role_api控制接口访问权限")
-public class SysApi{
+public class SysApi implements Serializable{
 
     private static final long serialVersionUID=1L;
 

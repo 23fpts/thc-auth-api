@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_org")
 @ApiModel(value="SysOrg对象", description="系统组织结构表")
-public class SysOrg {
+public class SysOrg implements Serializable{
 
     private static final long serialVersionUID=1L;
 

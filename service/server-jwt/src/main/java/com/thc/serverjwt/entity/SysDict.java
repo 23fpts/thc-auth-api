@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_dict")
 @ApiModel(value="SysDict对象", description="数据字典表")
-public class SysDict {
+public class SysDict implements Serializable{
 
     private static final long serialVersionUID=1L;
 

@@ -2,6 +2,8 @@ package com.thc.serverjwt.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author thc
  * @Title:
@@ -10,5 +12,5 @@ import lombok.Data;
  * @date 2020/9/20 10:19 下午
  */
 @Data
-public class TestEntity {
+public class TestEntity implements Serializable {
 }

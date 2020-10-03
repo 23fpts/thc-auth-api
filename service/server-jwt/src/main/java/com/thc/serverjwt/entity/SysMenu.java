@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_menu")
 @ApiModel(value="SysMenu对象", description="系统菜单表")
-public class SysMenu  {
+public class SysMenu implements Serializable {
 
     private static final long serialVersionUID=1L;
 

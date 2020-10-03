@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @Data
 @TableName("sys_user_role")
 @ApiModel(value="SysUserRole对象", description="用户角色关系表")
-public class SysUserRole {
+public class SysUserRole  implements Serializable{
 
     private static final long serialVersionUID=1L;
 
