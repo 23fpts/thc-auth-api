@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thc.serverjwt.mapper.SystemMapper">
+
+    <select id="selectOrgTree" resultType="com.thc.serverjwt.entity.SysOrg">
+        SELECT id, org_pid as orgPid ,org_pids as orgPids ,is_leaf as leaf,
+               org_name as orgName ,address ,phone, email, sort, level, status
+        FROM sys_org o
+        # trim prefix表示trim标签内容前面加where，prefixOverrides表示删除第一个AND或OR，suffix表示最后加上 suffixOverrides表示删除最后一个AND或OR
+        <trim prefix="WHERE" prefixOverrides="AND|OR" suffixOverrides="AND|OR">
+            AND (org_pids like CONCAT('%[',#{rootOrgId},']%') OR id = #{rootOrgId})
+            <if test="orgNameLike !=null and orgNameLike != '' " >
+                AND org_name like CONCAT('%',#{orgNameLike},'%')
+            </if>
+            <if test="orgStatus !=null " >
+                AND status = #{orgStatus}
+            </if>
+        </trim>
+        ORDER BY level,sort
+    </select>
+
+</mapper>

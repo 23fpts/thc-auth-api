@@ -10,7 +10,7 @@ package com.thc.commonutils;
 public interface ResultCode {
 
 
-    Integer SUCCESS = 20000; //成功
+    Integer SUCCESS = 200; //成功
 
-    Integer ERROR = 20001; //失败
+    Integer ERROR = 201; //失败
 }

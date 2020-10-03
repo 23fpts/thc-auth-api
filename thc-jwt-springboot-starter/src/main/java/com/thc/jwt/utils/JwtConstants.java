@@ -15,4 +15,14 @@ public class JwtConstants {
 
     public static final String CONTROLLER_ROLES = "/roles";
 
+    // "/swagger-ui.html"
+    public static final String SWAGGER_UI_HTML = "/swagger-ui.html";
+
+    //
+    public static final String WEBJARS = "/webjars/**";
+
+    public static final String V2 = "/v2/**";
+
+    // /swagger-resources/**
+    public static final String SWAGGER_RESOURCES = "/swagger-resources/**";
 }

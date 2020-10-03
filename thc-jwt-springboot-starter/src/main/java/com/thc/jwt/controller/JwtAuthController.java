@@ -43,7 +43,7 @@ public class JwtAuthController {
 
 
     /**
-     * 使用用户名密码换JWT令牌
+     * 使用用户名密码换JWT令牌 Post
      */
     @RequestMapping(value = JwtConstants.CONTROLLER_AUTHENTICATION)
     public R login(@RequestBody Map<String,String> map){
@@ -68,7 +68,8 @@ public class JwtAuthController {
     }
 
     /**
-     * 刷新JWT令牌
+     * 刷新JWT令牌 Get
+     * 如果jwt过期了，就报错，否则返回jwt新令牌
      */
     @RequestMapping(value = JwtConstants.CONTROLLER_REFRESH)
     public  R refresh(@RequestHeader("${thc.jwt.header}") String token){

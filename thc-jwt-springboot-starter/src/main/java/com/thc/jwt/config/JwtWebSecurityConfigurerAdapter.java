@@ -53,6 +53,9 @@ public class JwtWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
+
+
         if(jwtProperties.getCsrfDisabled()){
             http = http.csrf().disable();
         }
@@ -62,8 +65,14 @@ public class JwtWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
                 .antMatchers(
                         JwtConstants.CONTROLLER_AUTHENTICATION,
                         JwtConstants.CONTROLLER_REFRESH,
-                        JwtConstants.CONTROLLER_ROLES
+                        JwtConstants.CONTROLLER_ROLES,
+                        // swagger
+                        JwtConstants.SWAGGER_UI_HTML,
+                        JwtConstants.WEBJARS,
+                        JwtConstants.V2,
+                        JwtConstants.SWAGGER_RESOURCES
                 ).permitAll();
+
 
         //通过配置实现的不需要JWT令牌就可以访问的接口
         for(String uri : jwtProperties.getPermitAllURI()){
@@ -72,6 +81,8 @@ public class JwtWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapte
         //RBAC权限控制级别的接口权限校验
         http.authorizeRequests().anyRequest()
                 .access("@rbacService.hasPermission(request,authentication)");
+
+
     }
 
     @Override

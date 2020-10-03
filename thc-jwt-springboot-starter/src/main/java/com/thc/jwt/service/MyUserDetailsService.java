@@ -29,21 +29,22 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         System.out.println("MyUserDetailsService");
-        //加载基础用户信息
+        // 加载基础用户信息
         MyUserDetails myUserDetails = myUserDetailsServiceMapper.findByUserName(username);
 
-        //加载用户角色列表
+        // 加载用户角色列表
         List<String> roleCodes = myUserDetailsServiceMapper.findRoleByUserName(username);
 
 
-        //通过用户角色列表加载用户的资源权限列表
+        // 通过用户角色列表加载用户的资源权限列表
         List<String> authorities = myUserDetailsServiceMapper.findApiByRoleCodes(roleCodes);
 
-        //角色是一个特殊的权限，ROLE_前缀
-        roleCodes = roleCodes.stream()
-                .map(rc -> "ROLE_" +rc)
-                .collect(Collectors.toList());
+        // 角色是一个特殊的权限，ROLE_前缀, 如果数据库存的就是ROLE_前缀就不需要处理
+//        roleCodes = roleCodes.stream()
+//                .map(rc -> "ROLE_" +rc)
+//                .collect(Collectors.toList());
 
+        //
         authorities.addAll(roleCodes);
 
         myUserDetails.setAuthorities(

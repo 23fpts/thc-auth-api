@@ -19,6 +19,13 @@ import javax.annotation.Resource;
  * @date 2020/9/27 7:41 下午
  */
 
+/**
+ * 记录错误的修改记录 TODO
+ * componentScan的地址要对，
+ * mapperScan的也是，要注意，最好配置为com.thc.**.mapper
+ *
+ */
+
 @Configuration
 // 如果thc.jwt.enabled 的值和havingValue的值不一样就不会启动配置。
 @ConditionalOnProperty(name = "thc.jwt.enabled", havingValue = "true")

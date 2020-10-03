@@ -31,5 +31,10 @@ public class TestController {
         throw new MyException(123, "test2");
     }
 
+    @GetMapping("test3")
+    public String test3() {
+        return "test3";
+    }
+
 
 }
