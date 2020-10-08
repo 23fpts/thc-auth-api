@@ -16,7 +16,24 @@
                 AND status = #{orgStatus}
             </if>
         </trim>
-        ORDER BY level,sort
+        ORDER BY level, sort
+    </select>
+
+    <select id="selectMenuTree" resultType="com.thc.serverjwt.entity.SysMenu">
+        SELECT id, menu_pid as menuPid , menu_pids as menuPids ,is_leaf as leaf,
+        menu_name as menuName , url , icon, sort, level, status
+        FROM sys_menu m
+        # trim prefix表示trim标签内容前面加where，prefixOverrides表示删除第一个AND或OR，suffix表示最后加上 suffixOverrides表示删除最后一个AND或OR
+        <trim prefix="WHERE" prefixOverrides="AND|OR" suffixOverrides="AND|OR">
+            AND (menu_pids like CONCAT('%[',#{rootOrgId},']%') OR id = #{rootOrgId})
+            <if test="menuNameLike !=null and menuNameLike != '' " >
+                AND org_name like CONCAT('%',#{menuNameLike},'%')
+            </if>
+            <if test="menuStatus !=null " >
+                AND status = #{menuStatus}
+            </if>
+        </trim>
+        ORDER BY level, sort
     </select>
 
 </mapper>

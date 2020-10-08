@@ -14,9 +14,9 @@ public class DataTreeUtil {
 
     /**
      * 递归构建tree结构
-     * @param paramList
-     * @param rootNodeId
-     * @param <T>
+     * @param paramList 未排成树形结构的所有结点列表
+     * @param rootNodeId 跟结点id
+     * @param <T> 类型
      * @return
      */
     public static <T extends DataTree<T>> List<T> buildTree (

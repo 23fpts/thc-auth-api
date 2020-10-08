@@ -101,7 +101,7 @@ public class SysOrgService {
         // 查找所有父节点和欲删除结点sysOrg父节点相同的结点
         QueryWrapper<SysOrg> wrapperParent = new QueryWrapper<>();
         wrapperParent.like("org_pids", "["+sysOrg.getOrgPid()+"]");
-        List<SysOrg> myFatherChildren = sysOrgMapper.selectList(wrapperParent);
+//        List<SysOrg> myFatherChildren = sysOrgMapper.selectList(wrapperParent);
         Integer myFatherChildrenSize = sysOrgMapper.selectCount(wrapperParent);
         // 只有sysOrg一个孩子，设为叶子结点
         if (myFatherChildrenSize==1) {
