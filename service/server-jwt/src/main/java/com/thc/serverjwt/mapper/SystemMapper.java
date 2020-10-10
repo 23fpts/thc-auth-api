@@ -31,4 +31,48 @@ public interface SystemMapper {
     List<SysMenu> selectMenuTree(@Param("rootOrgId") Integer rootOrgId,
                                  @Param("menuNameLike") String menuNameLike,
                                  @Param("menuStatus") Boolean menuStatus);
+
+    /**
+     * 查找所有level为2的api的id
+     * @return
+     */
+    List<Integer> selectApiExpandedKeys();
+
+    /**
+     * 查找所有level为2的menu的id
+     * @return
+     */
+    List<Integer> selectMenuExpandedKeys();
+
+    /**
+     * 根据roleId查询所有有权限的api的id
+     * @param roleId roleId
+     * @return
+     */
+    List<Integer> selectApiCheckedKeys(Integer roleId);
+
+    /**
+     * 根据roleId查询所有有权限的menu的id
+     * @param roleId
+     * @return
+     */
+    List<Integer> selectMenuCheckedKeys(Integer roleId);
+
+    /**
+     * 根据roleId插入数据进role_menu表，设置role的menu权限
+     * @param roleId roleId
+     * @param checkedIds 所有赋予权限的menu的id
+     * @return
+     */
+    Integer insertRoleMenuIds(@Param("roleId") Integer roleId,
+                              @Param("checkedIds") List<Integer> checkedIds);
+
+    /**
+     * 根据roleId插入数据进role_api表，设置role的api权限
+     * @param roleId
+     * @param checkedIds
+     * @return
+     */
+    Integer insertRoleApiIds(@Param("roleId") Integer roleId,
+                             @Param("checkedIds") List<Integer> checkedIds);
 }

@@ -3,11 +3,14 @@ package com.thc.serverjwt.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.thc.serverjwt.dto.SysMenuNode;
 import com.thc.serverjwt.entity.SysMenu;
+import com.thc.serverjwt.entity.SysRoleMenu;
 import com.thc.serverjwt.mapper.SysMenuMapper;
+import com.thc.serverjwt.mapper.SysRoleMenuMapper;
 import com.thc.serverjwt.mapper.SystemMapper;
 import com.thc.servicebase.exceptionhandler.MyException;
 import com.thc.servicebase.exceptionhandler.MyExceptionType;
 import com.thc.servicebase.utils.tree.DataTreeUtil;
+import io.swagger.models.auth.In;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,9 @@ public class SysMenuService {
 
     @Autowired
     private SysMenuMapper sysMenuMapper;
+
+    @Autowired
+    private SysRoleMenuMapper sysRoleMenuMapper;
 
     /**
      * 生成树形结构
@@ -112,6 +118,39 @@ public class SysMenuService {
         }
         // 删除sysMenu
         sysMenuMapper.deleteById(sysMenu.getId());
+    }
+
+    /**
+     * getCheckedKeys 获取某角色具有的菜单权限id列表
+     * @param roleId roleId
+     * @return
+     */
+    public List<Integer> getCheckedKeys(Integer roleId) {
+        return systemMapper.selectMenuCheckedKeys(roleId);
+    }
+
+    /**
+     * 获取所有level为2的结点的列表（获取菜单树默认展开节点）
+     * @return
+     */
+    public List<Integer> getExpandedKeys() {
+        return systemMapper.selectMenuExpandedKeys();
+    }
+
+    /**
+     * 保存某角色roleId的勾选菜单权限id列表
+     * @param roleId roleId
+     * @param checkedIds menu权限id列表
+     */
+    @Transactional
+    public void saveCheckedKeys(Integer roleId, List<Integer> checkedIds) {
+        // 全删了在插入，前端每次必须把原来的数据加上新的传来
+        QueryWrapper<SysRoleMenu> wrapper = new QueryWrapper<>();
+        wrapper.eq("role_id", roleId);
+        sysRoleMenuMapper.delete(wrapper);
+        // 在插入所有的数据
+        systemMapper.insertRoleMenuIds(roleId, checkedIds);
+
     }
 
     private void setMenuPidsAndLevel(SysMenu child) {

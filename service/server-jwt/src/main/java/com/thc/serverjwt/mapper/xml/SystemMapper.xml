@@ -36,4 +36,44 @@
         ORDER BY level, sort
     </select>
 
+    <select id="selectApiExpandedKeys" resultType="java.lang.Integer">
+        select id
+        from sys_api a
+        where a.level = 2
+    </select>
+
+    <select id="selectMenuExpandedKeys" resultType="java.lang.Integer">
+        select id
+        from sys_menu m
+        where m.level = 2
+    </select>
+
+    <select id="selectApiCheckedKeys" resultType="java.lang.Integer">
+        select api_id as apiId
+        from sys_role_api ra
+        where ra.role_id = #{roleId}
+    </select>
+
+    <select id="selectMenuCheckedKeys" resultType="java.lang.Integer">
+        select menu_id as menuId
+        from sys_role_menu rm
+        where rm.role_id = #{roleId}
+    </select>
+
+    <select id="insertRoleMenuIds">
+        insert into sys_role_menu (role_id, menu_id)
+        values
+        <foreach collection="checkedIds" item="item" separator=",">
+            (#{roleId}, #{item})
+        </foreach>
+    </select>
+
+    <select id="insertRoleApiIds">
+        insert into sys_role_api (role_id, api_id)
+        values
+        <foreach collection="checkedIds" item="item" separator=",">
+            (#{roleId}, #{item})
+        </foreach>
+    </select>
+
 </mapper>
