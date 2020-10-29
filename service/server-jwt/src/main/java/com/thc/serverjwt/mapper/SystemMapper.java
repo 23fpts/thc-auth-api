@@ -1,5 +1,6 @@
 package com.thc.serverjwt.mapper;
 
+import com.thc.serverjwt.entity.SysApi;
 import com.thc.serverjwt.entity.SysMenu;
 import com.thc.serverjwt.entity.SysOrg;
 import org.apache.ibatis.annotations.Param;
@@ -28,9 +29,13 @@ public interface SystemMapper {
                                @Param("orgNameLike") String orgNameLike,
                                @Param("orgStatus") Boolean orgStatus);
 
-    List<SysMenu> selectMenuTree(@Param("rootOrgId") Integer rootOrgId,
+    List<SysMenu> selectMenuTree(@Param("rootOrgId") Integer rootMenuId,
                                  @Param("menuNameLike") String menuNameLike,
                                  @Param("menuStatus") Boolean menuStatus);
+
+    List<SysApi> selectApiTree(@Param("rootApiId") Integer rootApiId,
+                               @Param("apiNameLike") String apiNameLike,
+                               @Param("apiStatus") Boolean apiStatus);
 
     /**
      * 查找所有level为2的api的id

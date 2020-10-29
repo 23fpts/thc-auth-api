@@ -115,6 +115,7 @@ public class SysMenuService {
             SysMenu parent = new SysMenu();
             parent.setId(sysMenu.getMenuPid());
             parent.setLeaf(true);
+            sysMenuMapper.updateById(parent);
         }
         // 删除sysMenu
         sysMenuMapper.deleteById(sysMenu.getId());
