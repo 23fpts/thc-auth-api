@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -164,4 +165,25 @@ public class SysMenuService {
             }
         }
     }
+
+    // 根据用户的username获取他有权限的menu
+    public List<SysMenuNode> getMenuTreeByUsername(String username) {
+        //根据用户名查询该用户可以访问的菜单
+        List<SysMenu> sysMenus = systemMapper.selectMenuByUsername(username);
+
+        if (sysMenus.size() > 0) {
+            Integer rootMenuId = sysMenus.get(0).getId(); //第一条记录为根节点
+            //将List<SysMenu>转成List<SysMenuNode>
+            List<SysMenuNode> sysMenuNodes =
+                    sysMenus.stream().map(item -> {
+                        SysMenuNode bean = new SysMenuNode();
+                        BeanUtils.copyProperties(item, bean);
+                        return bean;
+                    }).collect(Collectors.toList());
+            //构建树形结构节点列表
+            return DataTreeUtil.buildTreeWithoutRoot(sysMenuNodes, rootMenuId);
+        }
+        return new ArrayList<>();
+    }
+
 }

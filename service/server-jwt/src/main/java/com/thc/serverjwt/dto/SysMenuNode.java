@@ -17,6 +17,18 @@ public class SysMenuNode extends SysMenu implements DataTree<SysMenuNode> {
     //为某对象加上children成员变量
     private List<SysMenuNode> children;
 
+    private String path;   //新加入path
+
+    private String name;  //新加入name
+
+    public String getPath() {
+        return this.getUrl();   //path返回url
+    }
+    public String getName() {
+        return this.getMenuName();  //name返回menuName
+    }
+
+
     @Override
     public Integer getParentId() {
         return super.getMenuPid();

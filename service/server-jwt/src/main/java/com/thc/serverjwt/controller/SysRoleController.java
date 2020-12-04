@@ -1,10 +1,14 @@
 package com.thc.serverjwt.controller;
 
 import com.thc.commonutils.R;
+import com.thc.serverjwt.dto.UserRoleCheckedIds;
 import com.thc.serverjwt.entity.SysRole;
 import com.thc.serverjwt.service.SysRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author thc
@@ -40,6 +44,18 @@ public class SysRoleController {
     @PostMapping("delete")
     public R delete(@RequestBody SysRole sysRole) {
         sysRoleService.deleteRole(sysRole);
+        return R.ok();
+    }
+
+    @PostMapping("checkedroles")
+    public R checkedroles(@RequestParam Integer userId) {
+        Map<String, Object> ret = sysRoleService.getRolesAndChecked(userId);
+        return R.ok().data(ret);
+    }
+
+    @PostMapping("savekeys")
+    public R savekeys(@RequestBody UserRoleCheckedIds userRoleCheckedIds){
+        sysRoleService.saveCheckedKeys(userRoleCheckedIds.getUserId(),userRoleCheckedIds.getCheckedIds());
         return R.ok();
     }
 }

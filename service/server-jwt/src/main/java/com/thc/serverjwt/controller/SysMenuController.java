@@ -40,6 +40,11 @@ public class SysMenuController {
         return R.ok().data(sysMenuNodes);
     }
 
+    @PostMapping(value = "/tree/user")
+    public R usertree(@RequestParam("username") String username) {
+        return R.ok().data(sysMenuService.getMenuTreeByUsername(username));
+    }
+
     @PostMapping("add")
     public R add (@RequestBody SysMenu sysMenu) {
         sysMenuService.addMenu(sysMenu);
@@ -82,4 +87,6 @@ public class SysMenuController {
         sysMenuService.saveCheckedKeys(roleCheckedIds.getRoleId(), roleCheckedIds.getCheckedIds());
         return R.ok();
     }
+
+
 }

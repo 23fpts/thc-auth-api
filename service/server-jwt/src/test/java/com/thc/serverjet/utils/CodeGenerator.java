@@ -13,22 +13,21 @@ import org.junit.Test;
 public class CodeGenerator {
 
     // 要生成的表名
-    private static String[] tables = { "sys_api", "sys_config", "sys_dict", "sys_menu",
-            "sys_org", "sys_role", "sys_role_api", "sys_role_menu", "sys_user", "sys_user_role"};
+    private static String[] tables = { "t_teacher"};
 
     // 输出的地方
-    private static String outputDir = "/Users/thc/Documents/web_project/thc-auth/document" ;
+    private static String outputDir = "/Users/thc/Desktop/master/watch/sample/document" ;
 
 
     // 数据库配置四要素
     private static String driverName = "com.mysql.cj.jdbc.Driver";
     // 注意库名
-    private static String url = "jdbc:mysql://127.0.0.1:3306/thc_auth_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8";
+    private static String url = "jdbc:mysql://127.0.0.1:3306/watch_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2b8";
     private static String username = "root";
     private static String password = "thcasdlkj";
 
     // 包配置 parent.modulesName
-    private static String modulesName = "serverjwt" ; // 模块名
+    private static String modulesName = "watchapi" ; // 模块名
     private static String parent = "com.thc" ; // 父包名
 
     // 策略配置

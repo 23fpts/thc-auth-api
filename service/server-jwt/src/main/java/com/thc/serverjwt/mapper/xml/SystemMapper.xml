@@ -92,4 +92,62 @@
         </foreach>
     </select>
 
+
+    <!-- 用户管理 -->
+    <select id="selectUser" resultType="com.thc.serverjwt.entity.SysUserOrg">
+        SELECT u.id,u.username,u.org_id,o.org_name,u.enabled,u.phone,u.email,u.create_time
+        FROM sys_user u
+        LEFT JOIN sys_org o ON u.org_id = o.id
+        <trim prefix="WHERE" prefixOverrides="AND|OR" suffixOverrides="AND|OR">
+            <if test="username !=null and username !='' ">
+                AND u.username like CONCAT('%',#{username},'%')
+            </if>
+            <if test="phone !=null and phone != '' " >
+                AND u.phone like CONCAT('%',#{phone},'%')
+            </if>
+            <if test="email !=null and email != '' " >
+                AND u.email like CONCAT('%',#{email},'%')
+            </if>
+            <if test="enabled != null  " >
+                AND u.enabled = #{enabled}
+            </if>
+            <if test="createStartTime != null  and createEndTime != null " >
+                AND u.create_time between #{createStartTime} and #{createEndTime}
+            </if>
+            <if test="orgId !=null and orgId != '' " >
+                AND (
+                o.org_pids like CONCAT('%',#{orgId},'%')
+                OR
+                o.id = #{orgId}
+                )
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="getCheckedRoleIds" resultType="java.lang.Integer">
+        SELECT role_id
+        FROM sys_user_role ra
+        WHERE ra.user_id = #{userId};
+    </select>
+
+    <insert id="insertUserRoleIds" >
+        insert into sys_user_role ( user_id,role_id )
+        values
+        <foreach collection="checkedIds" item="item"  separator=",">
+            (#{userId},#{item})
+        </foreach>
+    </insert>
+
+    <select id="selectMenuByUsername"
+            resultType="com.zimug.dongbb.common.persistence.auto.model.SysMenu">
+        SELECT distinct m.id,menu_pid,menu_pids,is_leaf,menu_name,url,icon,sort,level,status
+        FROM sys_menu m
+                 LEFT JOIN sys_role_menu rm ON m.id = rm.menu_id
+                 LEFT JOIN sys_user_role ur ON ur.role_id = rm.role_id
+                 LEFT JOIN sys_user u ON u.id = ur.user_id
+        WHERE u.username = #{username}
+        ORDER BY level,sort
+    </select>
+
 </mapper>

@@ -8,13 +8,11 @@ import java.util.List;
  * @author thc
  * @Title:
  * @Package com.thc.serverjwt.dto
- * @Description: 一个role多个权限
- * @date 2020/10/10 8:53 下午
+ * @Description: 一个角色多个role
+ * @date 2020/12/3 6:27 下午
  */
 @Data
-public class RoleCheckedIds {
-
-    private Integer roleId;
-
+public class UserRoleCheckedIds {
+    private Integer userId;
     private List<Integer> checkedIds;
 }

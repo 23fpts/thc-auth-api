@@ -1,11 +1,14 @@
 package com.thc.serverjwt.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.thc.serverjwt.entity.SysApi;
 import com.thc.serverjwt.entity.SysMenu;
 import com.thc.serverjwt.entity.SysOrg;
+import com.thc.serverjwt.entity.SysUserOrg;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -80,4 +83,33 @@ public interface SystemMapper {
      */
     Integer insertRoleApiIds(@Param("roleId") Integer roleId,
                              @Param("checkedIds") List<Integer> checkedIds);
+
+    /**
+     * 查询用户信息
+     * @param orgId
+     * @param username
+     * @param phone
+     * @param email
+     * @param enabled
+     * @param createStartTime 时间查询范围
+     * @param createEndTime 时间查询范围
+     * @return
+     */
+    Page<SysUserOrg> selectUser(Page<SysUserOrg> page,
+                                @Param("orgId") Integer orgId ,
+                                @Param("username") String username ,
+                                @Param("phone") String phone,
+                                @Param("email") String email,
+                                @Param("enabled") Boolean enabled,
+                                @Param("createStartTime") Date createStartTime,
+                                @Param("createEndTime") Date createEndTime);
+
+    //根据用户id获取用户已经具有的角色
+    List<Integer> getCheckedRoleIds(Integer userId);
+    //插入用户id、角色id关系(保存)
+    Integer insertUserRoleIds(@Param("userId") Integer userId,
+                              @Param("checkedIds") List<Integer> checkedIds);
+
+    // 根据username查询menu
+    List<SysMenu> selectMenuByUsername(@Param("username") String username );
 }
